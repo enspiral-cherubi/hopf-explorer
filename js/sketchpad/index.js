@@ -12,9 +12,15 @@ var sketchpad = {
     this.bindEventListeners()
   },
 
+  extractNewSphericalCoords: function () {
+    var newCoordsArray = this.sphericalCoordsArray
+    this.sphericalCoordsArray = []
+    return newCoordsArray
+  },
+
   addSphericalCoords: function (x,y) {
-    x = x - this.$sketchpad.width() / 2
-    y = y - this.$sketchpad.height() / 2
+    x = x / this.$sketchpad.width() - 0.5
+    y = y / this.$sketchpad.height() - 0.5
     this.sphericalCoordsArray.push({
       eta: Math.atan(1/mag([x,y])),
       phi: Math.atan(y/x)
