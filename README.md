@@ -38,3 +38,11 @@ npm run deploy
 credits:
 
 four-dimensional hyper-sphere projection from [The Hyper-Stereographic projection of the Four-Dimensional Hyper-Sphere]()
+
+---
+
+notes:
+
+x: red
+y: green
+z: blue

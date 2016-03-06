@@ -7,6 +7,7 @@ module.exports = {
   scene: new THREE.Scene(),
   camera: new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000),
   renderer: new THREE.WebGLRenderer({alpha: true}),
+  fibers: [],
   init: function () {
     this.initRenderer()
     this.addAxes()
@@ -28,9 +29,16 @@ module.exports = {
   generateImage: function () {
     var self = this
     var coordsArray = getCoordsFor2Sphere(3)
-    coordsArray.forEach(function (coords) {
-      var fiber = generateFiber(coords)
+    this.fibers = coordsArray.map(generateFiber)
+    this.fibers.forEach(function (fiber) {
       self.scene.add(fiber)
+    })
+  },
+
+  removeImage: function () {
+    var self = this
+    this.fibers.forEach(function (fiber) {
+      self.scene.remove(fiber)
     })
   },
 
