@@ -1,49 +1,68 @@
 var $ = require('jquery')
 var range = require('lodash.range')
 
-var $sketchpad = $('#sketchpad')
-var context = $sketchpad[0].getContext('2d')
-var paint = false
-var clickX = [], clickY = [], clickDrag = []
+module.exports = {
+  $sketchpad: $('#sketchpad'),
+  context: $('#sketchpad')[0].getContext('2d'),
+  paint: false,
+  clickX: [],
+  clickY: [],
+  clickDrag: [],
 
-function addClick(x, y, dragging) {
-  clickX.push(x)
-  clickY.push(y)
-  clickDrag.push(dragging)
-}
+  addClick: function (x, y, dragging) {
+    this.clickX.push(x)
+    this.clickY.push(y)
+    this.clickDrag.push(dragging)
+  },
 
-$sketchpad.mousedown(function (e) {
-  paint = true
-  addClick(e.offsetX, e.offsetY);
-  redraw()
-})
+  bindEventListeners: function () {
+    var self = this
 
-$sketchpad.mouseup(function (e) { paint = false })
-$sketchpad.mouseleave(function(e){ paint = false })
+    this.$sketchpad.mousedown(function (e) {
+      self.paint = true
+      self.addClick(e.offsetX, e.offsetY);
+      self.redraw()
+    })
 
-$sketchpad.mousemove(function (e) {
-  if (paint) {
-    addClick(e.offsetX, e.offsetY, true)
-    redraw()
+    this.$sketchpad.mouseup(function (e) {
+      self.paint = false
+    })
+
+    this.$sketchpad.mouseleave(function(e){
+      self.paint = false
+    })
+
+    this.$sketchpad.mousemove(function (e) {
+      if (self.paint) {
+        self.addClick(e.offsetX, e.offsetY, true)
+        self.redraw()
+      }
+    })
+  },
+
+  redraw: function () {
+    var self = this
+
+    this.clear()
+
+    this.context.strokeStyle = "#000000"
+    this.context.lineJoin = "round"
+    this.context.lineWidth = 1
+
+    range(this.clickX.length).forEach(function (i) {
+      self.context.beginPath()
+      if (self.clickDrag[i] && i) {
+        self.context.moveTo(self.clickX[i-1], self.clickY[i-1])
+      } else {
+        self.context.moveTo(self.clickX[i]-1, self.clickY[i])
+      }
+      self.context.lineTo(self.clickX[i], self.clickY[i])
+      self.context.closePath()
+      self.context.stroke()
+    })
+  },
+
+  clear: function () {
+    this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height)
   }
-})
-
-function redraw () {
-  context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-
-  context.strokeStyle = "#000000"
-  context.lineJoin = "round"
-  context.lineWidth = 1
-
-  range(clickX.length).forEach(function (i) {
-    context.beginPath()
-    if (clickDrag[i] && i) {
-      context.moveTo(clickX[i-1], clickY[i-1])
-    } else {
-      context.moveTo(clickX[i]-1, clickY[i])
-    }
-    context.lineTo(clickX[i], clickY[i])
-    context.closePath()
-    context.stroke()
-  })
 }
