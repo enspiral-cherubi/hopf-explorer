@@ -24,23 +24,18 @@ module.exports = {
       self.renderer.render(self.scene, self.camera)
       var coordsArray = sketchpad.extractNewSphericalCoords()
       self.fibers = coordsArray.map(generateFiber)
-      self.fibers.forEach(function (fiber) {
-        self.scene.add(fiber)
-      })
+      self.fibers.forEach(function (fiber) { self.scene.add(fiber) })
 
       lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
       var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
       lastTimeMsec  = nowMsec
       if (self.controls) { self.controls.update(deltaMsec/1000) }
-
     })
   },
 
   removeImage: function () {
     var self = this
-    this.fibers.forEach(function (fiber) {
-      self.scene.remove(fiber)
-    })
+    this.fibers.forEach(function (fiber) { self.scene.remove(fiber) })
   },
 
   // private
