@@ -1,6 +1,7 @@
 var THREE = require('three')
 var OrbitControls = require('three-orbit-controls')(THREE)
 var getCoordsFor2Sphere = require('./get-coords-for-2-sphere')
+var generateFiber = require('./generate-fiber')
 
 module.exports = {
   scene: new THREE.Scene(),
@@ -11,7 +12,7 @@ module.exports = {
     this.addAxes()
     this.initControls()
 
-    this.camera.position.z = 5
+    this.camera.position.z = 10
   },
 
   startAnimation: function () {
@@ -25,13 +26,12 @@ module.exports = {
   },
 
   generateImage: function () {
-    // get all coords on 2-sphere
-    var coords = getCoordsFor2Sphere(3)
-    console.log('coords: ', coords)
-    // for each coord
-      // create a fiber geometry
-      // material: map x,y,z -> r,g,b
-      // add to scene
+    var self = this
+    var coordsArray = getCoordsFor2Sphere(3)
+    coordsArray.forEach(function (coords) {
+      var fiber = generateFiber(coords)
+      self.scene.add(fiber)
+    })
   },
 
   // private

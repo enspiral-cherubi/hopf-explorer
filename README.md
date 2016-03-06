@@ -1,7 +1,7 @@
 
 # hopf-vibration
 
-three.js visualization of the hopf vibration 
+three.js visualization of the hopf vibration
 
 ## how
 
@@ -9,7 +9,7 @@ three.js visualization of the hopf vibration
 
 ```
 git clone https://github.com/data-doge/hopf-vibration
-cd 
+cd
 npm install
 ```
 
@@ -32,3 +32,9 @@ npm test
 ```
 npm run deploy
 ```
+
+---
+
+credits:
+
+four-dimensional hyper-sphere projection from [The Hyper-Stereographic projection of the Four-Dimensional Hyper-Sphere]()
