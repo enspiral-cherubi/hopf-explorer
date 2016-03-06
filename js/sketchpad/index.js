@@ -1,6 +1,6 @@
 var $ = require('jquery')
 var mag = require('vectors/mag')(2)
-var Color = require("color")
+var hexStringFromSphericalCoords = require('./../services/hex-string-from-spherical-coords')
 
 var sketchpad = {
   $sketchpad: $('#sketchpad'),
@@ -45,7 +45,7 @@ var sketchpad = {
   // private
 
   drawPoint: function (coords, sphericalCoords) {
-    this.context.fillStyle = this.getColorFrom(sphericalCoords)
+    this.context.fillStyle = hexStringFromSphericalCoords(sphericalCoords)
     this.context.fillRect(coords.x, coords.y, 5, 5)
   },
 
@@ -56,15 +56,7 @@ var sketchpad = {
       phi: Math.atan2(scaledY, scaledX),                       // -PI -> PI
       eta: Math.atan(Math.pow(mag([scaledX, scaledY]), -5)) * 2 // 0 -> PI}
     }
-  },
-
-  getColorFrom: function (sphericalCoords) {
-    var hue = parseInt(sphericalCoords.phi * 360 / (2 * Math.PI) + 180)
-    var saturation = parseInt(sphericalCoords.eta / Math.PI * 100)
-    var hsv = Color().hsv(hue, saturation, 100)
-    return hsv.hexString()
   }
-
 }
 
 module.exports = sketchpad
