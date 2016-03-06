@@ -38,7 +38,6 @@ var sketchpad = {
   onClick: function (e) {
     var coords = {x: e.offsetX, y: e.offsetY}
     var sphericalCoords = this.getSphericalCoordsFrom(coords)
-    console.log('eta: ', sphericalCoords.eta, ', phi: ', sphericalCoords.phi)
     this.sphericalCoordsArray.push(sphericalCoords)
     this.drawPoint(coords, sphericalCoords)
   },
@@ -51,11 +50,8 @@ var sketchpad = {
   },
 
   getSphericalCoordsFrom: function (coords) {
-    console.log('coords.x: ', coords.x, ', coords.y: ', coords.y)
     var scaledX = (coords.x / this.$sketchpad.width() - 0.5) * 4 // -2 -> 2
     var scaledY = (-coords.y / this.$sketchpad.height() + 0.5) * 4 // -2 -> 2
-    console.log('scaledX: ', scaledX, ', scaledY: ', scaledY)
-
     return {
       phi: Math.atan2(scaledY, scaledX),                       // -PI -> PI
       eta: Math.atan(Math.pow(mag([scaledX, scaledY]), -5)) * 2 // 0 -> PI}
