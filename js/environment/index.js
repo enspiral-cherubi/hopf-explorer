@@ -1,37 +1,31 @@
 var THREE = require('three')
 var OrbitControls = require('three-orbit-controls')(THREE)
-var getCoordsFor2Sphere = require('./get-coords-for-2-sphere')
 var generateFiber = require('./generate-fiber')
+var sketchpad = require('./../sketchpad')
 
 module.exports = {
   scene: new THREE.Scene(),
   camera: new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000),
-  renderer: new THREE.WebGLRenderer({alpha: true}),
+  renderer: new THREE.WebGLRenderer({alpha: true, canvas: document.getElementById('environment')}),
   fibers: [],
   init: function () {
     this.initRenderer()
     this.addAxes()
     this.initControls()
-
-    this.camera.position.z = 10
+    sketchpad.init()
   },
 
   startAnimation: function () {
     var self = this
     var lastTimeMsec = null
-
     requestAnimationFrame(function render (nowMsec) {
       requestAnimationFrame(render)
       self.renderer.render(self.scene, self.camera)
-    })
-  },
-
-  generateImage: function () {
-    var self = this
-    var coordsArray = getCoordsFor2Sphere(3)
-    this.fibers = coordsArray.map(generateFiber)
-    this.fibers.forEach(function (fiber) {
-      self.scene.add(fiber)
+      var coordsArray = sketchpad.extractNewSphericalCoords()
+      self.fibers = coordsArray.map(generateFiber)
+      self.fibers.forEach(function (fiber) {
+        self.scene.add(fiber)
+      })
     })
   },
 
@@ -56,6 +50,7 @@ module.exports = {
   },
 
   initControls: function () {
+    this.camera.position.z = 10
     this.controls = new OrbitControls(this.camera)
   }
 
