@@ -1,6 +1,5 @@
 var THREE = require('three')
-var norm2 = require('vectors/mag')(2)
-var norm3 = require('vectors/mag')(3)
+var mag = require('vectors/mag')(3)
 
 // TODO: give to world
 var generateFiber = function (coords) {
@@ -16,15 +15,15 @@ var generateFiber = function (coords) {
     var x4 = Math.sin(phi-theta) * Math.cos(eta/2)
 
     //stereographically project point on 3-sphere to point in 3D space in Cartesian coordinates
-    var n2 = norm2([x1,x2]), n3 = norm3([x1,x2,x3])
+    var m = mag([x1,x2,x3])
     var r = Math.sqrt((1-x4)/(1+x4))
 
     //return point in 3D space in Cartesian coordinates
     // return new THREE.Vector3(x,y,z)
     return new THREE.Vector3(
-      r * n2 / n3 * x2/n2,
-      r * n2 / n3 * x1/n2,
-      r * x3 / n3
+      r * x2 / m,
+      r * x1 / m,
+      r * x3 / m
     )
   }
 
