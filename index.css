@@ -4,7 +4,14 @@ html, body {
   margin: 0;
 }
 
-canvas {
+#environment {
   height: 100%;
   width: 100%;
+}
+
+#sketchpad {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  border: 1px solid black;
 }

@@ -2,6 +2,7 @@ var THREE = require('three')
 var norm2 = require('vectors/mag')(2)
 var norm3 = require('vectors/mag')(3)
 
+// TODO: give to world
 var generateFiber = function (coords) {
   var fiber = new THREE.Curve()
 
