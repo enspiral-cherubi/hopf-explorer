@@ -1,7 +1,7 @@
 var environment = require('./environment')
 var sketchpad = require('./sketchpad')
 
-sketchpad.bindEventListeners()
+sketchpad.init()
 
 environment.init()
 environment.startAnimation()
