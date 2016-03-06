@@ -1,9 +1,12 @@
+## hopf-vibration
 
-# hopf-vibration
+interactive three.js visualization of the hopf vibration
 
-three.js visualization of the hopf vibration
+- draw on a 2D sketchpad
+- graphs fibers of the hopf vibration over the sketchpad
+- fly through the image
 
-## how
+- all pen + paper work / _physics magic_ by [ragnar thorngren](https://math.berkeley.edu/~ragnar/)
 
 ### install
 
@@ -21,28 +24,9 @@ npm start
 
 browse to <http://localhost:9966/>.
 
-## test
-
-```
-npm test
-```
-
-## deploy
-
-```
-npm run deploy
-```
 
 ---
 
-credits:
+thanks to:
 
 four-dimensional hyper-sphere projection from [The Hyper-Stereographic projection of the Four-Dimensional Hyper-Sphere]()
-
----
-
-notes:
-
-x: red
-y: green
-z: blue
