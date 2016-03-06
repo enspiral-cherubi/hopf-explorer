@@ -1,5 +1,5 @@
 var THREE = require('three')
-var OrbitControls = require('three-orbit-controls')(THREE)
+var flyControls = require('three-fly-controls')(THREE)
 var generateFiber = require('./generate-fiber')
 var sketchpad = require('./../sketchpad')
 
@@ -18,6 +18,7 @@ module.exports = {
   startAnimation: function () {
     var self = this
     var lastTimeMsec = null
+
     requestAnimationFrame(function render (nowMsec) {
       requestAnimationFrame(render)
       self.renderer.render(self.scene, self.camera)
@@ -26,6 +27,12 @@ module.exports = {
       self.fibers.forEach(function (fiber) {
         self.scene.add(fiber)
       })
+
+      lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
+      var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+      lastTimeMsec  = nowMsec
+      if (self.controls) { self.controls.update(deltaMsec/1000) }
+
     })
   },
 
@@ -51,7 +58,7 @@ module.exports = {
 
   initControls: function () {
     this.camera.position.z = 10
-    this.controls = new OrbitControls(this.camera)
+    this.controls = new THREE.FlyControls(this.camera, this.renderer.domElement, { movementSpeed: 0.01 })
   }
 
 }
