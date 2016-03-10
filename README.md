@@ -6,13 +6,13 @@ interactive three.js visualization of the hopf vibration
 - graphs fibers of the hopf vibration over the sketchpad
 - fly through the image
 
-- all pen + paper work / _physics magic_ by [ragnar thorngren](https://math.berkeley.edu/~ragnar/)
+- all pen + paper work / _physics magic_ by [ragnar thorngren](https://math.berkeley.edu/~ragnar/), (@topological-ragnar)
 
 ### install
 
 ```
 git clone https://github.com/data-doge/hopf-vibration
-cd hopf-vibration
+cd
 npm install
 ```
 
