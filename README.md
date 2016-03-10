@@ -12,7 +12,7 @@ interactive three.js visualization of the hopf vibration
 
 ```
 git clone https://github.com/data-doge/hopf-vibration
-cd
+cd hopf-vibration
 npm install
 ```
 
