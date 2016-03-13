@@ -3,8 +3,8 @@ var flyControls = require('three-fly-controls')(THREE)
 var generateFiber = require('./generate-fiber')
 //var generateParticle = require('./../generate-particle')
 var hud = require('./../hud')
-var flow = require('./flow')
-// var modebutton = require('./../buttons')
+// var flow = require('./flow')
+var WindowResize = require('three-window-resize')
 
 module.exports = {
   scene: new THREE.Scene(),
@@ -18,6 +18,7 @@ module.exports = {
     this.initRenderer()
     this.addAxes()
     this.initControls()
+    WindowResize(this.renderer, this.camera)
     this.hud.init(this)
   },
 
@@ -47,10 +48,6 @@ module.exports = {
   removeImage: function () {
     var self = this
     this.fibers.forEach(function (fiber) { self.scene.remove(fiber) })
-  },
-
-  toggleMode: function() {
-    this.mode = this.mode === "fiber" ? "particle" : "fiber"
   },
 
   // private
