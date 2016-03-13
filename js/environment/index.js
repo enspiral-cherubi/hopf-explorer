@@ -3,7 +3,7 @@ var flyControls = require('three-fly-controls')(THREE)
 var generateFiber = require('./generate-fiber')
 //var generateParticle = require('./../generate-particle')
 var hud = require('./../hud')
-var flow = require('./flow')
+// var flow = require('./flow')
 // var modebutton = require('./../buttons')
 
 module.exports = {
