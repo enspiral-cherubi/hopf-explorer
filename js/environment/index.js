@@ -1,9 +1,9 @@
 var THREE = require('three')
 var flyControls = require('three-fly-controls')(THREE)
 var generateFiber = require('./generate-fiber')
-//var generateParticle = require('./../generate-particle')
+var generateParticle = require('./generate-particle')
 var hud = require('./../hud')
-var flow = require('./flow')
+var getFlow = require('./flow')
 // var modebutton = require('./../buttons')
 
 module.exports = {
@@ -33,14 +33,28 @@ module.exports = {
         self.fibers = coordsArray.map(generateFiber)
         self.fibers.forEach(function (fiber) { self.scene.add(fiber) })
       }
-      // if (self.mode === "particle"){
-      //   self.newparticles = coordsArray.map(generateParticle)
-      //   self.newparticles.forEach(function (particle) {self.scene.add(particle)})
-      // }
+      if (self.mode === "particle"){
+        var newparticles = coordsArray.map(generateParticle)
+        newparticles.forEach(function (particle) {self.scene.add(particle)})
+        self.particles = self.particles.concat(newparticles)
+      }
       lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
       var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
       lastTimeMsec  = nowMsec
+      //particles traverse the circle every 2pi seconds
+      self.particles.forEach(function (particle){
+        self.move(deltaMsec/1000)
+      })
+
       if (self.controls) { self.controls.update(deltaMsec/1000) }
+    })
+  },
+
+  move: function(dt) {
+    this.particles.forEach(function (particle){
+      var pos = particle.position
+      particle.position.add(getFlow(pos.x,pos.y,pos.z,dt))
+      console.log(getFlow(pos.x,pos.y,pos.z,dt))
     })
   },
 
