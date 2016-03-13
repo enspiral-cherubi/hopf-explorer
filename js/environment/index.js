@@ -4,7 +4,7 @@ var generateFiber = require('./generate-fiber')
 //var generateParticle = require('./../generate-particle')
 var hud = require('./../hud')
 // var flow = require('./flow')
-// var modebutton = require('./../buttons')
+var WindowResize = require('three-window-resize')
 
 module.exports = {
   scene: new THREE.Scene(),
@@ -18,6 +18,7 @@ module.exports = {
     this.initRenderer()
     this.addAxes()
     this.initControls()
+    WindowResize(this.renderer, this.camera)
     this.hud.init(this)
   },
 
