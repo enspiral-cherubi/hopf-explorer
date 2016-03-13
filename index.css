@@ -10,10 +10,13 @@ html, body {
   width: 100%;
 }
 
-#sketchpad {
+#sketchpad-container {
   position: fixed;
   bottom: 0;
   right: 0;
+}
+
+#sketchpad {
   background: rgba(0,0,0,0.05);
   cursor: crosshair;
 }
@@ -23,4 +26,26 @@ html, body {
   position: fixed;
   bottom: 0;
   left: 0;
+}
+
+#toggle-sketchpad-display-btn {
+  position: absolute;
+  top: -32px;
+  right: 0;
+  z-index: 1000;
+  padding: 3px 8px;
+  background: rgba(0,0,0,0.05);
+}
+
+/* css overrides */
+
+button {
+  border: none;
+  background: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: none;
 }
