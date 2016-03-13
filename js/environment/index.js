@@ -80,8 +80,5 @@ module.exports = {
   initControls: function () {
     this.camera.position.z = 10
     this.controls = new THREE.FlyControls(this.camera, this.renderer.domElement, { movementSpeed: 0.01 })
-  },
-
-
-
+  }
 }
