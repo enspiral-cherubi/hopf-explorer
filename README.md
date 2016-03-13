@@ -29,4 +29,4 @@ browse to <http://localhost:9966/>.
 
 thanks to:
 
-four-dimensional hyper-sphere projection from [The Hyper-Stereographic projection of the Four-Dimensional Hyper-Sphere]()
+four-dimensional hyper-sphere projection from [The Hyper-Stereographic projection of the Four-Dimensional Hyper-Sphere](http://journals.iucr.org/a/issues/1973/06/00/a09796/a09796.pdf)
