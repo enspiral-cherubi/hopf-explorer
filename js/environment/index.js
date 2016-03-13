@@ -1,5 +1,6 @@
 var THREE = require('three')
 var flyControls = require('three-fly-controls')(THREE)
+var OrbitControls = require('three-orbit-controls')(THREE)
 var generateFiber = require('./generate-fiber')
 var generateParticle = require('./generate-particle')
 var hud = require('./../hud')
@@ -48,7 +49,7 @@ module.exports = {
         self.move(deltaMsec/1000)
       })
 
-      if (self.controls) { self.controls.update(deltaMsec/1000) }
+      if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
     })
   },
 
@@ -93,6 +94,7 @@ module.exports = {
 
   initControls: function () {
     this.camera.position.z = 10
-    this.controls = new THREE.FlyControls(this.camera, this.renderer.domElement, { movementSpeed: 0.01 })
+    this.controls = new OrbitControls(this.camera)
+    // this.controls = new THREE.FlyControls(this.camera, this.renderer.domElement, { movementSpeed: 0.01 })
   }
 }
