@@ -43,9 +43,7 @@ module.exports = {
       var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
       lastTimeMsec  = nowMsec
       //particles traverse the circle every 2pi seconds
-      self.particles.forEach(function (particle){
-        self.move(deltaMsec/1000)
-      })
+      self.move(deltaMsec/2000)
 
       if (self.controls) { self.controls.update(deltaMsec/1000) }
     })
@@ -54,8 +52,7 @@ module.exports = {
   move: function(dt) {
     this.particles.forEach(function (particle){
       var pos = particle.position
-      particle.position.add(getFlow(pos.x,pos.y,pos.z,dt))
-      console.log(getFlow(pos.x,pos.y,pos.z,dt))
+      particle.position.add(getFlow(pos,dt))
     })
   },
 
