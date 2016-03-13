@@ -49,10 +49,6 @@ module.exports = {
     this.fibers.forEach(function (fiber) { self.scene.remove(fiber) })
   },
 
-  toggleMode: function() {
-    this.mode = this.mode === "fiber" ? "particle" : "fiber"
-  },
-
   // private
 
   addAxes: function () {
