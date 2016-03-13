@@ -53,7 +53,7 @@ var sketchpad = {
     var scaledX = (coords.x / this.$sketchpad.width() - 0.5) * 4 // -2 -> 2
     var scaledY = (-coords.y / this.$sketchpad.height() + 0.5) * 4 // -2 -> 2
     return {
-      phi: Math.atan2(scaledY, scaledX),                       // -PI -> PI
+      phi: Math.atan2(scaledY, scaledX)/2,                       // -PI -> PI
       eta: Math.atan(Math.pow(mag([scaledX, scaledY]), -1)) * 2 // 0 -> PI}
     }
   }
