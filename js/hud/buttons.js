@@ -1,7 +1,8 @@
 var $ = require('jquery')
 
 var buttons = {
-  $modeButton: $('#mode-button'),
+  $sketchModeSelector: $('#sketch-mode-selector'),
+
   init: function (env){
     this.env = env
     this.bindEventListeners()
@@ -9,9 +10,9 @@ var buttons = {
 
   bindEventListeners: function() {
     var self = this
-    this.$modeButton.click(function (e){
+    this.$sketchModeSelector.change(function (e){
       e.preventDefault()
-      self.env.toggleMode()
+      self.env.mode = $(this).val()
     })
   }
 }
