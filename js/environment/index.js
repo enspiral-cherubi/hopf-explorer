@@ -12,7 +12,8 @@ module.exports = {
   renderer: new THREE.WebGLRenderer({alpha: true, canvas: document.getElementById('environment')}),
   fibers: [],
   particles: [],
-  mode: "fiber",
+  sketchMode: "fiber",
+  controlsMode: "orbit",
   hud: hud,
   init: function () {
     this.initRenderer()
@@ -30,11 +31,11 @@ module.exports = {
       requestAnimationFrame(render)
       self.renderer.render(self.scene, self.camera)
       var coordsArray = self.hud.sketchpad.extractNewSphericalCoords()
-      if (self.mode === "fiber"){
+      if (self.sketchMode === "fiber"){
         self.fibers = coordsArray.map(generateFiber)
         self.fibers.forEach(function (fiber) { self.scene.add(fiber) })
       }
-      if (self.mode === "particle"){
+      if (self.sketchMode === "particle"){
         var newparticles = coordsArray.map(generateParticle)
         newparticles.forEach(function (particle) {self.scene.add(particle)})
         self.particles = self.particles.concat(newparticles)
@@ -62,6 +63,19 @@ module.exports = {
   removeImage: function () {
     var self = this
     this.fibers.forEach(function (fiber) { self.scene.remove(fiber) })
+  },
+
+  setControlsMode: function (mode) {
+    switch (mode) {
+      case 'fly':
+        // remove orbit controls
+        // create fly controls, set as controls
+        break
+      case 'orbit':
+        // remove fly controls, unbind event listeners
+        // set controls as orbit controls
+        break
+    }
   },
 
   // private

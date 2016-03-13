@@ -74,10 +74,18 @@ body {
 
 /* mode-selector */
 
-.mode-selector-container {
+.sketch-mode-selector-container {
   position: absolute;
   top: -24px;
   left: 0;
+}
+
+/* controls-selector */
+
+.controls-mode-selector-container {
+  position: absolute;
+  top: -24px;
+  left: 179px;
 }
 
 /* css overrides */

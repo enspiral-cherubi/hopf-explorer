@@ -2,6 +2,7 @@ var $ = require('jquery')
 
 var buttons = {
   $sketchModeSelector: $('#sketch-mode-selector'),
+  $controlsModeSelector: $('#controls-mode-selector'),
 
   init: function (env){
     this.env = env
@@ -11,8 +12,11 @@ var buttons = {
   bindEventListeners: function() {
     var self = this
     this.$sketchModeSelector.change(function (e){
-      e.preventDefault()
-      self.env.mode = $(this).val()
+      self.env.sketchMode = $(this).val()
+    })
+
+    this.$controlsModeSelector.change(function (e) {
+      self.env.setControlsMode($(this).val())
     })
   }
 }
