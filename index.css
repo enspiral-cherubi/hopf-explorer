@@ -14,7 +14,7 @@ html, body {
   position: fixed;
   bottom: 0;
   right: 0;
-  background: grey;
+  background: rgba(0,0,0,0.05);
 }
 
 
