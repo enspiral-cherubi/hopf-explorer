@@ -27,11 +27,10 @@
   },
   "homepage": "https://github.com/data-doge/hopf-vibration",
   "dependencies": {
+    "apod": "^0.3.0",
     "color": "^0.11.1",
     "jquery": "^2.2.1",
-    "lodash.random": "^3.1.3",
     "lodash.range": "^3.1.3",
-    "nasa-apod": "^0.1.1",
     "three": "^0.74.0",
     "three-orbit-controls": "^72.0.0",
     "three-window-resize": "^1.0.4",
