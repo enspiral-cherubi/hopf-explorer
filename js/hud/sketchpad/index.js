@@ -1,18 +1,21 @@
 var $ = require('jquery')
 var mag = require('vectors/mag')(2)
-var hexStringFromSphericalCoords = require('./../services/hex-string-from-spherical-coords')
+var hexStringFromSphericalCoords = require('./../../services/hex-string-from-spherical-coords')
+var controls = require('./controls')
 
 var sketchpad = {
   $sketchpad: $('#sketchpad'),
   $toggleDisplayBtn: $('#toggle-sketchpad-display-btn'),
+  controls: controls,
   context: $('#sketchpad')[0].getContext('2d'),
   paint: false,
   sphericalCoordsArray: [],
 
-  init: function () {
+  init: function (env) {
     this.setBackground()
     this.context.fillStyle = '#FFFFFF'
     this.bindEventListeners()
+    this.controls.init(env)
   },
 
   setBackground: function () {
@@ -40,13 +43,6 @@ var sketchpad = {
 
     this.$sketchpad.mouseup(function (e) { self.paint = false })
     this.$sketchpad.mouseleave(function(e){ self.paint = false })
-
-    this.$toggleDisplayBtn.click(function (e) {
-      e.preventDefault()
-      var $this = $(this)
-      self.$sketchpad.toggle()
-      self.$sketchpad.is(':visible') ? $this.html('&minus;') : $this.text('+')
-    })
   },
 
   onClick: function (e) {
