@@ -10,14 +10,18 @@ var hud = {
   init: function(env) {
     this.buttons.init(env)
     this.sketchpad.init()
-    var date = randomDate(new Date(2012, 0, 1),new Date())
-    console.log(date)
-    apod(date).then(function(data) {
-        $('body').css("background-image","url("+data.hdurl+")")
-        $('body').css("background-position","center")
-        $('body').css("background-size","cover")
-        $('body').css("background-repeat","no-repeat")
-    })
+    setBackgroundImage()
   }
 }
+
+var setBackgroundImage = function () {
+  var date = randomDate(new Date(2012, 0, 1),new Date())
+  apod(date).then(function(data) {
+      $('body').css("background-image","url("+data.hdurl+")")
+      $('body').css("background-position","center")
+      $('body').css("background-size","cover")
+      $('body').css("background-repeat","no-repeat")
+    })
+}
+
 module.exports = hud
