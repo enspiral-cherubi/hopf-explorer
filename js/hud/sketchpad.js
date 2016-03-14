@@ -39,7 +39,6 @@ var sketchpad = {
       e.preventDefault()
       var $this = $(this)
       self.$sketchpad.toggle()
-      console.log(self.$sketchpad.is(':visible'))
       self.$sketchpad.is(':visible') ? $this.html('&minus;') : $this.text('+')
     })
   },
