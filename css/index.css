@@ -20,7 +20,8 @@ body {
   position: fixed;
   bottom: 0;
   right: 0;
-  z-index: 1000;
+  display: flex;
+  flex-direction: column;
 }
 
 #sketchpad {
@@ -28,16 +29,29 @@ body {
 }
 
 #toggle-sketchpad-display-btn {
-  position: absolute;
-  top: -24px;
-  right: 0;
-  z-index: 1000;
-  padding: 0px 8px;
-  background: rgba(255,255,255,0.5);
-  font-size: 21px;
+  background: #EA2E49;
+  letter-spacing: 2px;
+  font-size: 12px;
+  border: 1px solid black;
+  border-left: none;
+  border-right: none;
+  flex: 1;
 }
 
-/* selectors */
+/* controls */
+
+.controls-container {
+  width: 100%;
+  display: flex;
+  position: relative;
+  right: 1px;
+}
+
+#controls-mode-selector-label {
+  border-left: none;
+}
+
+/* general selector styles */
 
 .input-container {
   opacity: 0.85;
@@ -56,7 +70,7 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   border: 1px solid black;
-  background: transparent;
+  background: rgba(255,255,255,0.5);
   padding: 4px 8px;
   border-radius: 0;
   cursor: pointer;
@@ -70,22 +84,6 @@ body {
 
 .brighten-on-hover:hover {
   opacity: 1 !important;
-}
-
-/* sketch-mode-selector */
-
-#sketch-mode-selector-container {
-  position: absolute;
-  top: -24px;
-  left: 0;
-}
-
-/* controls-mode-selector */
-
-#controls-mode-selector-container {
-  position: absolute;
-  top: -24px;
-  left: 179px;
 }
 
 /* css overrides */
