@@ -13,10 +13,10 @@ var hud = {
     var date = randomDate(new Date(2012, 0, 1),new Date())
     console.log(date)
     apod(date).then(function(data) {
-        $('#body').css("background-image","url("+data.hdurl+")")
-        $('#body').css("background-position","center")
-        $('#body').css("background-size","cover")
-        $('#body').css("background-repeat","no-repeat")
+        $('body').css("background-image","url("+data.hdurl+")")
+        $('body').css("background-position","center")
+        $('body').css("background-size","cover")
+        $('body').css("background-repeat","no-repeat")
     })
   }
 }
