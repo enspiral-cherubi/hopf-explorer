@@ -5,6 +5,7 @@ var controls = {
   $sketchModeSelector: $('#sketch-mode-selector'),
   $controlsModeSelector: $('#controls-mode-selector'),
   $toggleDisplayBtn: $('#toggle-sketchpad-display-btn'),
+  $selectorsContainer: $('#selectors-container'),
 
   init: function (env) {
     this.env = env
@@ -22,12 +23,11 @@ var controls = {
       self.env.setControlsMode($(this).val())
     })
 
-    console.log('this.$toggleDisplayBtn: ', this.$toggleDisplayBtn)
-
     this.$toggleDisplayBtn.click(function (e) {
       e.preventDefault()
       var $this = $(this)
       self.$sketchpad.toggle()
+      self.$selectorsContainer.toggle()
       self.$sketchpad.is(':visible') ? $this.html('close') : $this.text('open')
     })
   }
