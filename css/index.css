@@ -28,27 +28,30 @@ body {
   cursor: crosshair;
 }
 
+/* controls */
+
+#controls-container {
+  width: 100%;
+  display: flex;
+  position: relative;
+  border-bottom: 1px solid transparent;
+}
+
+#selectors-container {
+  display: flex;
+  position: relative;
+}
+
 #toggle-sketchpad-display-btn {
   background: #EA2E49;
   letter-spacing: 2px;
   font-size: 12px;
-  border: 1px solid black;
-  border-left: none;
   border-right: none;
   flex: 1;
 }
 
-/* controls */
-
-.controls-container {
-  width: 100%;
-  display: flex;
-  position: relative;
-  right: 1px;
-}
-
-#controls-mode-selector-label {
-  border-left: none;
+.controls-vertical-separator {
+  width: 1px;
 }
 
 /* general selector styles */
@@ -59,8 +62,7 @@ body {
 
 .input-label {
   float: left;
-  border: 1px solid black;
-  padding: 4px 8px;
+  padding: 5px 8px;
   background: #77C4D3;
   border-right: none;
 }
@@ -69,21 +71,11 @@ body {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  border: 1px solid black;
   background: rgba(255,255,255,0.5);
   padding: 4px 8px;
   border-radius: 0;
   cursor: pointer;
   text-align: center;
-}
-
-.brighten-on-hover {
-  opacity: 0.8 !important;
-  transition: 0.5s;
-}
-
-.brighten-on-hover:hover {
-  opacity: 1 !important;
 }
 
 /* css overrides */
