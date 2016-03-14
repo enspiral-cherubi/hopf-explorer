@@ -1,15 +1,12 @@
-var buttons = require('./buttons')
 var sketchpad = require('./sketchpad')
 var $ = require('jquery')
 var randomDate = require('./../services/random-date')
 var apod = require('nasa-apod')
 
 var hud = {
-  buttons: buttons,
   sketchpad: sketchpad,
   init: function(env) {
-    this.buttons.init(env)
-    this.sketchpad.init()
+    this.sketchpad.init(env)
     setBackgroundImage()
   }
 }

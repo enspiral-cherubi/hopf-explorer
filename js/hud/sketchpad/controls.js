@@ -1,16 +1,19 @@
 var $ = require('jquery')
 
-var buttons = {
+var controls = {
+  $sketchpad: $('#sketchpad'),
   $sketchModeSelector: $('#sketch-mode-selector'),
   $controlsModeSelector: $('#controls-mode-selector'),
+  $toggleDisplayBtn: $('#toggle-sketchpad-display-btn'),
 
-  init: function (env){
+  init: function (env) {
     this.env = env
     this.bindEventListeners()
   },
 
   bindEventListeners: function() {
     var self = this
+
     this.$sketchModeSelector.change(function (e){
       self.env.sketchMode = $(this).val()
     })
@@ -18,7 +21,16 @@ var buttons = {
     this.$controlsModeSelector.change(function (e) {
       self.env.setControlsMode($(this).val())
     })
+
+    console.log('this.$toggleDisplayBtn: ', this.$toggleDisplayBtn)
+
+    this.$toggleDisplayBtn.click(function (e) {
+      e.preventDefault()
+      var $this = $(this)
+      self.$sketchpad.toggle()
+      self.$sketchpad.is(':visible') ? $this.html('close') : $this.text('open')
+    })
   }
 }
 
-module.exports = buttons
+module.exports = controls
