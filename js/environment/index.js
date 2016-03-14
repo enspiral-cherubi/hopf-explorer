@@ -1,5 +1,5 @@
 var THREE = require('three')
-var flyControls = require('three-fly-controls')(THREE)
+var flyControls = require('./three-fly-controls-custom')(THREE)
 var OrbitControls = require('three-orbit-controls')(THREE)
 var generateFiber = require('./generate-fiber')
 var generateParticle = require('./generate-particle')
