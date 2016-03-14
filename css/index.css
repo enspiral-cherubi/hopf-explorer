@@ -37,7 +37,7 @@ body {
   font-size: 21px;
 }
 
-/* selector */
+/* selectors */
 
 .input-container {
   opacity: 0.85;
@@ -72,7 +72,7 @@ body {
   opacity: 1 !important;
 }
 
-/* mode-selector */
+/* sketch-mode-selector */
 
 .sketch-mode-selector-container {
   position: absolute;
@@ -80,7 +80,7 @@ body {
   left: 0;
 }
 
-/* controls-selector */
+/* controls-mode-selector */
 
 .controls-mode-selector-container {
   position: absolute;
