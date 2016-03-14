@@ -67,14 +67,16 @@ module.exports = {
   },
 
   setControlsMode: function (mode) {
+    this.controlsMode = mode
     switch (mode) {
       case 'fly':
-        // remove orbit controls
-        // create fly controls, set as controls
+        if (this.controls) { this.controls.dispose() }
+        this.controls = new THREE.FlyControls(this.camera, this.renderer.domElement, { movementSpeed: 0.01 })
+        this.controls.enable()
         break
       case 'orbit':
-        // remove fly controls, unbind event listeners
-        // set controls as orbit controls
+        if (this.controls) { this.controls.disable() }
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement)
         break
     }
   },
@@ -94,7 +96,6 @@ module.exports = {
 
   initControls: function () {
     this.camera.position.z = 10
-    this.controls = new OrbitControls(this.camera)
-    // this.controls = new THREE.FlyControls(this.camera, this.renderer.domElement, { movementSpeed: 0.01 })
+    this.setControlsMode(this.controlsMode)
   }
 }
