@@ -1,7 +1,8 @@
 var buttons = require('./buttons')
 var sketchpad = require('./sketchpad')
 var $ = require('jquery')
-var fetchNasaApod = require('./../services/fetch-nasa-apod')(process.env.NASA_API_KEY)
+var apod = require('apod')
+apod.apiKey = process.env.NASA_API_KEY
 
 var hud = {
   buttons: buttons,
@@ -14,7 +15,7 @@ var hud = {
 }
 
 var setBackgroundImage = function () {
-  fetchNasaApod(function (res) {
+  apod.random(function (err, res) {
     $('body').css('background-image', 'url(' + res.hdurl + ')')
   })
 }
