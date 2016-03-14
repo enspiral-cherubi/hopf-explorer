@@ -10,8 +10,14 @@ var sketchpad = {
   sphericalCoordsArray: [],
 
   init: function () {
+    this.setBackground()
     this.context.fillStyle = '#FFFFFF'
     this.bindEventListeners()
+  },
+
+  setBackground: function () {
+    this.context.fillStyle = 'rgba(255,255,255,0.5)'
+    this.context.fillRect(0,0,this.$sketchpad.width(),this.$sketchpad.height())
   },
 
   extractNewSphericalCoords: function () {
