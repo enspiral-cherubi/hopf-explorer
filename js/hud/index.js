@@ -1,10 +1,8 @@
 var buttons = require('./buttons')
 var sketchpad = require('./sketchpad')
 var $ = require('jquery')
-var randomDate = require('./../services/random-date')
-var apod = require('nasa-apod').Client({
-  apiKey: process.env.NASA_API_KEY
-})
+var apod = require('apod')
+apod.apiKey = process.env.NASA_API_KEY
 
 var hud = {
   buttons: buttons,
@@ -17,13 +15,9 @@ var hud = {
 }
 
 var setBackgroundImage = function () {
-  var date = randomDate(new Date(2012, 0, 1),new Date())
-  apod(date).then(function(data) {
-      $('body').css("background-image","url("+data.hdurl+")")
-      $('body').css("background-position","center")
-      $('body').css("background-size","cover")
-      $('body').css("background-repeat","no-repeat")
-    })
+  apod.random(function (err, res) {
+    $('body').css('background-image', 'url(' + res.hdurl + ')')
+  })
 }
 
 module.exports = hud
