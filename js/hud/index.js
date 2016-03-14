@@ -1,7 +1,9 @@
 var sketchpad = require('./sketchpad')
 var $ = require('jquery')
 var randomDate = require('./../services/random-date')
-var apod = require('nasa-apod')
+var apod = require('nasa-apod').Client({
+  apiKey: process.env.NASA_API_KEY
+})
 
 var hud = {
   sketchpad: sketchpad,
