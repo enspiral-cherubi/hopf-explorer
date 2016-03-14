@@ -108,3 +108,20 @@ input, select {
 select:focus {
   outline: none;
 }
+
+/* moz styling */
+
+@-moz-document url-prefix() {
+  .select-input {
+    padding: 3px 8px;
+  }
+
+  .controls-mode-selector-container {
+    left: 187px
+  }
+
+  #toggle-sketchpad-display-btn {
+    font-size: 20px;
+    top: -24px;
+  }
+}
