@@ -6,6 +6,7 @@ var dolphinGeometryLoader = require('three-dolphin-geometry-loader')(THREE)
 var dolphinGeometry;
 dolphinGeometryLoader(function (geometry) {
   dolphinGeometry = geometry
+  dolphinGeometry.scale(0.1,0.1,0.1)
 })
 
 // TODO: give to world
