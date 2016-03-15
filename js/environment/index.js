@@ -37,7 +37,13 @@ module.exports = {
         self.fibers.forEach(function (fiber) { self.scene.add(fiber) })
       }
       if (self.sketchMode === "particle"){
-        var newparticles = coordsArray.map(generateParticle)
+        var newparticles = coordsArray.map(function (coords) {
+          return generateParticle({
+            sphericalCoords: coords,
+            geometryType: 'dolphin'
+          })
+        })
+
         newparticles.forEach(function (particle) {self.scene.add(particle)})
         self.particles = self.particles.concat(newparticles)
       }
