@@ -34,6 +34,12 @@ var generateParticle = function (args) {
     r * x3 / m
   )
 
+  particleMesh.updateRotation = function () {
+    this.rotation.x += 0.1
+    this.rotation.y += 0.1
+    this.rotation.z += 0.1
+  }
+
   return particleMesh
 }
 

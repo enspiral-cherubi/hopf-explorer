@@ -61,6 +61,7 @@ module.exports = {
     this.particles.forEach(function (particle){
       var pos = particle.position
       particle.position.add(getFlow(pos,dt))
+      particle.updateRotation()
     })
   },
 
