@@ -54,7 +54,7 @@ module.exports = {
       if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
 
       var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData, 24, 0, 5)
+      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
 
       console.log('cochleaSphericalCoords: ', cochleaSphericalCoords)
 
