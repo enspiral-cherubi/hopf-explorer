@@ -56,15 +56,11 @@ module.exports = {
       var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
       var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
 
-      console.log('cochleaSphericalCoords: ', cochleaSphericalCoords)
-
-      //
-      //
-      // self.removeFibers()
-      // self.fibers = cochleaSphericalCoords.map(generateFiber)
-      // self.fibers.map(function (fiber) {
-      //   scene.add(fiber)
-      // })
+      self.removeFibers()
+      self.fibers = cochleaSphericalCoords.map(generateFiber)
+      self.fibers.map(function (fiber) {
+        self.scene.add(fiber)
+      })
     })
   },
 
