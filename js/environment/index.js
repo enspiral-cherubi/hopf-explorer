@@ -8,6 +8,7 @@ var getFlow = require('./flow')
 var WindowResize = require('three-window-resize')
 var $ = require('jquery')
 var webAudioAnalyser2 = require('web-audio-analyser-2')
+var generateCochleaSphericalCoords = require('./generate-cochlea-spherical-coords')
 
 module.exports = {
   scene: new THREE.Scene(),
@@ -53,8 +54,17 @@ module.exports = {
       if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
 
       var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-      console.log('barkScaleFrequencyData.frequencies: ', barkScaleFrequencyData.frequencies)
-      // update spiral
+      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData, 24, 0, 5)
+
+      console.log('cochleaSphericalCoords: ', cochleaSphericalCoords)
+
+      //
+      //
+      // self.removeFibers()
+      // self.fibers = cochleaSphericalCoords.map(generateFiber)
+      // self.fibers.map(function (fiber) {
+      //   scene.add(fiber)
+      // })
     })
   },
 
@@ -87,7 +97,7 @@ module.exports = {
     })
   },
 
-  removeImage: function () {
+  removeFibers: function () {
     var self = this
     this.fibers.forEach(function (fiber) { self.scene.remove(fiber) })
   },
