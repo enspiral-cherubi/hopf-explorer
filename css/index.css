@@ -103,3 +103,10 @@ select:focus {
     border-style: none;
   }
 }
+
+/* TODO: clean plz */
+#mic-selector {
+  position: fixed;
+  top: 0;
+  left: 0;
+}

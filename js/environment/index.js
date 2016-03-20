@@ -6,6 +6,8 @@ var generateParticle = require('./generate-particle')
 var hud = require('./../hud')
 var getFlow = require('./flow')
 var WindowResize = require('three-window-resize')
+var $ = require('jquery')
+var webAudioAnalyser2 = require('web-audio-analyser-2')
 
 module.exports = {
   scene: new THREE.Scene(),
@@ -22,6 +24,7 @@ module.exports = {
     this.initControls()
     WindowResize(this.renderer, this.camera)
     this.hud.init(this)
+    this.setupAudio()
   },
 
   startAnimation: function () {
@@ -48,7 +51,33 @@ module.exports = {
       self.updateParticlePositions(deltaMsec/2000)
 
       if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
+
+      var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
+      console.log('barkScaleFrequencyData.frequencies: ', barkScaleFrequencyData.frequencies)
+      // update spiral
     })
+  },
+
+  setupAudio: function () {
+    var audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+
+    this.analyser = webAudioAnalyser2({
+      context: audioCtx,
+      fftSize: 2048,
+      equalTemperedFreqBinCount: 10
+    })
+
+    this.analyser.connect(audioCtx.destination)
+
+    var $micSelector = require('mic-selector')(audioCtx)
+    $micSelector.attr('id', 'mic-selector')
+    var self = this
+
+    $micSelector.on('bang', function (e, node) {
+      node.connect(self.analyser)
+    })
+
+    $('body').append($micSelector)
   },
 
   updateParticlePositions: function(dt) {
