@@ -32,7 +32,14 @@ module.exports = {
     var self = this
     var lastTimeMsec = null
 
-    requestAnimationFrame(function render (nowMsec) {
+    var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
+    var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+    self.fibers = cochleaSphericalCoords.map(generateFiber)
+    self.fibers.map(function (fiber) {
+      self.scene.add(fiber)
+    })
+ 
+     requestAnimationFrame( function render (nowMsec) {
       requestAnimationFrame(render)
       self.renderer.render(self.scene, self.camera)
       var coordsArray = self.hud.sketchpad.extractNewSphericalCoords()
@@ -55,12 +62,11 @@ module.exports = {
 
       var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
       var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+      console.log("coch0: ", cochleaSphericalCoords[0])
+      console.log("coch1: ", cochleaSphericalCoords[1])
+      console.log("coch2: ", cochleaSphericalCoords[2])
 
-      self.removeFibers()
-      self.fibers = cochleaSphericalCoords.map(generateFiber)
-      self.fibers.map(function (fiber) {
-        self.scene.add(fiber)
-      })
+      self.updateFiberGeometry(cochleaSphericalCoords)
     })
   },
 
@@ -86,6 +92,16 @@ module.exports = {
     $('body').append($micSelector)
   },
 
+  updateFiberGeometry: function(csc) {
+      for (i = 0; i< this.fibers.length; i++) {
+          var fiber = this.fibers[i]
+          var sphericalCoords = csc[i]
+          fiber.geometry.vertices = generateFiber(sphericalCoords).vertices
+          fiber.geometry.dynamic = true
+          fiber.geometry.verticesNeedUpdate = true
+      }
+  },
+
   updateParticlePositions: function(dt) {
     this.particles.forEach(function (particle){
       var pos = particle.position
@@ -95,7 +111,11 @@ module.exports = {
 
   removeFibers: function () {
     var self = this
-    this.fibers.forEach(function (fiber) { self.scene.remove(fiber) })
+    this.fibers.forEach(function (fiber) { 
+        self.scene.remove(fiber) 
+        fiber.material.dispose()
+        fiber.texture.dispose()
+        fiber.geometry.dispose() })
   },
 
   setControlsMode: function (mode) {
