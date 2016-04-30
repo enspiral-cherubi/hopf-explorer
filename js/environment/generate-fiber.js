@@ -39,7 +39,7 @@ var generateFiberGeometry = function (sphericalCoords) {
   var hexString = hexStringFromSphericalCoords(sphericalCoords).replace('#', '0x')
   var hex = parseInt(hexString)
   var material = new THREE.LineBasicMaterial({color: hex})
-  tubeGeometry.mesh = new THREE.Mesh(tubGeometry,material)
+  tubeGeometry.mesh = new THREE.Mesh(tubeGeometry,material)
   return tubeGeometry
 }
 
