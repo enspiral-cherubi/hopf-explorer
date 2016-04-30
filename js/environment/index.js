@@ -1,7 +1,7 @@
 var THREE = require('three')
 var flyControls = require('./three-fly-controls-custom')(THREE)
 var OrbitControls = require('three-orbit-controls')(THREE)
-var generateFiber = require('./generate-fiber')
+var generateFiberGeometry = require('./generate-fiber')
 var generateParticle = require('./generate-particle')
 var hud = require('./../hud')
 var getFlow = require('./flow')
@@ -37,8 +37,9 @@ module.exports = {
       self.renderer.render(self.scene, self.camera)
       var coordsArray = self.hud.sketchpad.extractNewSphericalCoords()
       if (self.sketchMode === "fiber"){
-        self.fibers = coordsArray.map(generateFiber)
-        self.fibers.forEach(function (fiber) { self.scene.add(fiber) })
+        var newFibers = coordsArray.map(generateFiberGeometry)
+        self.fibers.push(newFibers)
+        newFibers.forEach(function (fiberGeometry) { self.scene.add(fiberGeometry.mesh) })
       }
       if (self.sketchMode === "particle"){
         var newparticles = coordsArray.map(generateParticle)

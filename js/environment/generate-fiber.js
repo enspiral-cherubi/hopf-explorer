@@ -3,7 +3,7 @@ var mag = require('vectors/mag')(3)
 var hexStringFromSphericalCoords = require('./../services/hex-string-from-spherical-coords')
 
 // TODO: give to world
-var generateFiber = function (sphericalCoords) {
+var generateFiberGeometry = function (sphericalCoords) {
   var fiber = new THREE.Curve()
 
   fiber.getPoint = function (t) {
@@ -39,7 +39,8 @@ var generateFiber = function (sphericalCoords) {
   var hexString = hexStringFromSphericalCoords(sphericalCoords).replace('#', '0x')
   var hex = parseInt(hexString)
   var material = new THREE.LineBasicMaterial({color: hex})
-  return new THREE.Mesh(tubeGeometry, material)
+  tubeGeometry.mesh = new THREE.Mesh(tubGeometry,material)
+  return tubeGeometry
 }
 
-module.exports = generateFiber
+module.exports = generateFiberGeometry
