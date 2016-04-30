@@ -32,13 +32,14 @@ module.exports = {
     var self = this
     var lastTimeMsec = null
 
-    var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-    var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
-    self.fibers = cochleaSphericalCoords.map(generateFiber)
+    // var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
+    // var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+    var cochleaSphericalCoords = [{eta:1,phi:0}]
+    self.fibers = cochleaSphericalCoords.map(generateFiberGeometry)
     self.fibers.map(function (fiber) {
-      self.scene.add(fiber)
+      self.scene.add(fiber.mesh)
     })
- 
+
      requestAnimationFrame( function render (nowMsec) {
       requestAnimationFrame(render)
       self.renderer.render(self.scene, self.camera)
@@ -61,12 +62,12 @@ module.exports = {
 
       if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
 
-      var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
-      console.log("coch0: ", cochleaSphericalCoords[0])
-      console.log("coch1: ", cochleaSphericalCoords[1])
-      console.log("coch2: ", cochleaSphericalCoords[2])
-
+      // var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
+      // var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+      // console.log("coch0: ", cochleaSphericalCoords[0])
+      // console.log("coch1: ", cochleaSphericalCoords[1])
+      // console.log("coch2: ", cochleaSphericalCoords[2])
+      var cochleaSphericalCoords = [{eta:Math.random(),phi:Math.random()}]
       self.updateFiberGeometry(cochleaSphericalCoords)
     })
   },
@@ -94,12 +95,13 @@ module.exports = {
   },
 
   updateFiberGeometry: function(csc) {
-      for (i = 0; i< this.fibers.length; i++) {
+      for (i = 0; i< csc.length; i++) {
           var fiber = this.fibers[i]
           var sphericalCoords = csc[i]
-          fiber.geometry.vertices = generateFiber(sphericalCoords).vertices
-          fiber.geometry.dynamic = true
-          fiber.geometry.verticesNeedUpdate = true
+          fiber.vertices = generateFiberGeometry(sphericalCoords).vertices
+          fiber.verticesNeedUpdate = true
+          fiber.normalsNeedUpdate = true
+          console.log('meow')
       }
   },
 
@@ -112,8 +114,8 @@ module.exports = {
 
   removeFibers: function () {
     var self = this
-    this.fibers.forEach(function (fiber) { 
-        self.scene.remove(fiber) 
+    this.fibers.forEach(function (fiber) {
+        self.scene.remove(fiber)
         fiber.material.dispose()
         fiber.texture.dispose()
         fiber.geometry.dispose() })
