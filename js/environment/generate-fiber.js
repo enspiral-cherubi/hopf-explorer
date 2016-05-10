@@ -3,8 +3,8 @@ var hexStringFromSphericalCoords = require('./../services/hex-string-from-spheri
 var hopfMap = require('./../services/hopf-map')
 
 // TODO: give to world
-var generateFiberGeometry = function (sphericalCoords) {
-
+var generateFiberGeometry = function (params) {
+  var sphericalCoords = params.sphericalCoords || params
   //this generates a tube geometry with 520 vertices
   var fiber = new THREE.Curve()
 
@@ -22,11 +22,12 @@ var generateFiberGeometry = function (sphericalCoords) {
   )
   // TODO: make color xyz to rgb
   var hexString = hexStringFromSphericalCoords(sphericalCoords).replace('#', '0x')
-  var hex = parseInt(hexString)
+  var hex =  parseInt(hexString)
   //wireframes are cool here
-  var material = new THREE.MeshBasicMaterial({color: hex, wireframe:true})
+  var material = new THREE.MeshBasicMaterial({color: params.color || hex, wireframe:true})
   tubeGeometry.mesh = new THREE.Mesh(tubeGeometry,material)
   tubeGeometry.sphericalCoords = sphericalCoords
+  tubeGeometry.originalSphericalCoords = sphericalCoords
   tubeGeometry.dynamic = true
   return tubeGeometry
 }

@@ -11,6 +11,7 @@ var webAudioAnalyser2 = require('web-audio-analyser-2')
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 var getMic = require('./getMic.js')(audioCtx)
 var generateCochleaSphericalCoords = require('./generate-cochlea-spherical-coords')
+var hexStringFromSphericalCoords = require('./../services/hex-string-from-spherical-coords')
 var hopfMap = require('./../services/hopf-map')
 
 module.exports = {
@@ -37,8 +38,10 @@ module.exports = {
     var lastTimeMsec = null
 
     var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-    var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
-    self.fibers = cochleaSphericalCoords.map(generateFiberGeometry)
+    var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 1, 5)
+    self.fibers = cochleaSphericalCoords.map(function (sc) {
+      var hex = parseInt(hexStringFromSphericalCoords({eta:sc.eta,phi:sc.eta/2}).replace('#', '0x'))
+      return generateFiberGeometry({sphericalCoords:sc,color:hex})})
     self.fibers.map(function (fiber) {
       self.scene.add(fiber.mesh)
     })
@@ -66,7 +69,7 @@ module.exports = {
       if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
 
       var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 1, 5)
       self.updateFiberGeometry(cochleaSphericalCoords)
     })
   },
@@ -104,20 +107,30 @@ module.exports = {
       for (i = 0; i< csc.length; i++) {
           var fiber = this.fibers[i]
           var oldSphericalCoords = fiber.sphericalCoords
+          var originalSphericalCoords = fiber.originalSphericalCoords
           var newSphericalCoords = csc[i]
           var sane = true //try turning this off
-          if (sane) {
-            fiber.sphericalCoords = csc[i]
-          }
           var diff = function (t) {
             var plasticity = 1 //knob
-            return hopfMap(newSphericalCoords,t).sub(hopfMap(oldSphericalCoords,t)
-              .multiplyScalar(plasticity))}
+            var insideOut = false //minor oh fuck button
+            var newHopf = hopfMap(newSphericalCoords,insideOut && 1-t || t)
+            var oldHopf = hopfMap(oldSphericalCoords,t)
+            var difference = newHopf.sub(oldHopf).multiplyScalar(0.8)
+            if (!sane){
+              var flow = 0.05
+              difference.addScaledVector(newHopf,-flow)
+              difference.addScaledVector(hopfMap(originalSphericalCoords,t),flow)
+            }
+            return difference
+            }
           for(j = 0; j<520; j++){
             //two more knobs, the multiplier for j and the scale of the transformation
-            var twist = 1 //knob
+            var twist = 4 //knob
             var inertia = 0.1 //knob
             fiber.vertices[j].addScaledVector(diff(twist*j/520),inertia)
+          }
+          if (sane) {
+            fiber.sphericalCoords = csc[i]
           }
           fiber.verticesNeedUpdate = true
       }
