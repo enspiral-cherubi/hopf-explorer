@@ -11,10 +11,11 @@ var webAudioAnalyser2 = require('web-audio-analyser-2')
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 var getMic = require('./getMic.js')(audioCtx)
 var generateCochleaSphericalCoords = require('./generate-cochlea-spherical-coords')
+var hopfMap = require('./../services/hopf-map')
 
 module.exports = {
   scene: new THREE.Scene(),
-  camera: new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000),
+  camera: new THREE.PerspectiveCamera(1000, window.innerWidth/window.innerHeight, 0.1, 5000),
   renderer: new THREE.WebGLRenderer({alpha: true, canvas: document.getElementById('environment')}),
   fibers: [],
   particles: [],
@@ -34,9 +35,8 @@ module.exports = {
     var self = this
     var lastTimeMsec = null
 
-    // var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-    // var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
-    var cochleaSphericalCoords = [{eta:1,phi:0}]
+    var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
+    var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
     self.fibers = cochleaSphericalCoords.map(generateFiberGeometry)
     self.fibers.map(function (fiber) {
       self.scene.add(fiber.mesh)
@@ -66,7 +66,6 @@ module.exports = {
 
       var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
       var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
-      console.log(barkScaleFrequencyData.frequencies)
       self.updateFiberGeometry(cochleaSphericalCoords)
     })
   },
@@ -103,10 +102,14 @@ module.exports = {
   updateFiberGeometry: function(csc) {
       for (i = 0; i< csc.length; i++) {
           var fiber = this.fibers[i]
-          var sphericalCoords = csc[i]
-          fiber.vertices = generateFiberGeometry(sphericalCoords).vertices
+          var oldSphericalCoords = fiber.sphericalCoords
+          var newSphericalCoords = csc[i]
+          var diff = function (t) {
+            return hopfMap(newSphericalCoords,t).sub(hopfMap(oldSphericalCoords,t))}
+          for(j = 0; j<520; j++){
+            fiber.vertices[j].add(diff(j/520))
+          }
           fiber.verticesNeedUpdate = true
-          fiber.normalsNeedUpdate = true
       }
   },
 

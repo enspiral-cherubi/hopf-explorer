@@ -1,13 +1,18 @@
-var generateCochleaSphericalCoords = function (fourierData,numIntervals,t,numCirclesPerInterval){
-  //t should be slowly varying, fourierData computed with numIntevals,
+var generateCochleaSphericalCoords = function (fourierData,numIntervals,eta0,numCirclesPerInterval){
+  //eta0 should be slowly varying, fourierData computed with numIntevals,
   //numCirclesPerInterval is a independent parameter
   var bigAngleInterval = Math.PI/numIntervals
   var smallAngleInterval = bigAngleInterval/numCirclesPerInterval
   var sphericalCoords = []
   for (j=0; j<numIntervals; j++){
     for (k=0; k<numCirclesPerInterval; k++){
+      //eta is evenly distributed amongst the circles in the cochlea
       var eta = bigAngleInterval*j + smallAngleInterval*k
-      var phi = Math.asin(Math.tanh(eta+t)*Math.tan(fourierData[j]*2*Math.PI/255))
+      //phi(eta) = asin(tanh((eta+eta0)*cot(beta)))
+      //where beta is the angle the loxodrome makes with the meridian at eta+eta0
+      //beta is some function of the fourier amplitudes ranging from -PI to PI
+      var beta = fourierData[j]*2*Math.PI/255-Math.PI
+      var phi = Math.asin(Math.tanh((eta+eta0)/Math.tan(beta+0.8)))
       sphericalCoords.push({eta:eta, phi:phi})
     }
   }
