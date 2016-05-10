@@ -38,9 +38,9 @@ module.exports = {
     var lastTimeMsec = null
 
     var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-    var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 1, 5)
+    var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
     self.fibers = cochleaSphericalCoords.map(function (sc) {
-      var hex = parseInt(hexStringFromSphericalCoords({eta:sc.eta,phi:sc.eta/2}).replace('#', '0x'))
+      var hex = parseInt(hexStringFromSphericalCoords({eta:sc.eta,phi:-2*sc.phi+Math.PI}).replace('#', '0x'))
       return generateFiberGeometry({sphericalCoords:sc,color:hex})})
     self.fibers.map(function (fiber) {
       self.scene.add(fiber.mesh)
@@ -69,7 +69,7 @@ module.exports = {
       if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
 
       var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 1, 5)
+      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
       self.updateFiberGeometry(cochleaSphericalCoords)
     })
   },
@@ -109,7 +109,7 @@ module.exports = {
           var oldSphericalCoords = fiber.sphericalCoords
           var originalSphericalCoords = fiber.originalSphericalCoords
           var newSphericalCoords = csc[i]
-          var sane = true //try turning this off
+          var sane = false //try turning this off
           var diff = function (t) {
             var plasticity = 1 //knob
             var insideOut = false //minor oh fuck button
@@ -117,7 +117,7 @@ module.exports = {
             var oldHopf = hopfMap(oldSphericalCoords,t)
             var difference = newHopf.sub(oldHopf).multiplyScalar(0.8)
             if (!sane){
-              var flow = 0.05
+              var flow = 0.1
               difference.addScaledVector(newHopf,-flow)
               difference.addScaledVector(hopfMap(originalSphericalCoords,t),flow)
             }
@@ -125,7 +125,7 @@ module.exports = {
             }
           for(j = 0; j<520; j++){
             //two more knobs, the multiplier for j and the scale of the transformation
-            var twist = 4 //knob
+            var twist = 1 //knob
             var inertia = 0.1 //knob
             fiber.vertices[j].addScaledVector(diff(twist*j/520),inertia)
           }

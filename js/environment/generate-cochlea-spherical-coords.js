@@ -17,7 +17,8 @@ var generateCochleaSphericalCoords = function (fourierData,numIntervals,eta0,num
       //where beta is the angle the loxodrome makes with the meridian at eta+eta0
       //beta is some function of the fourier amplitudes ranging from -PI to PI
       var beta = fourierData[j]*2*Math.PI/255-Math.PI
-      var phi = Math.asin(Math.tanh((eta+eta0)/Math.tan(beta-2)))
+      var depth = 2 //wraps of cochlea
+      var phi = depth*Math.asin(Math.tanh((eta+eta0)/Math.tan(beta-2)))
       sphericalCoords.push({eta:eta, phi:phi})
     }
   }
