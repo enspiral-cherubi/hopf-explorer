@@ -8,6 +8,8 @@ var getFlow = require('./flow')
 var WindowResize = require('three-window-resize')
 var $ = require('jquery')
 var webAudioAnalyser2 = require('web-audio-analyser-2')
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+var getMic = require('./getMic.js')(audioCtx)
 var generateCochleaSphericalCoords = require('./generate-cochlea-spherical-coords')
 
 module.exports = {
@@ -62,18 +64,14 @@ module.exports = {
 
       if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
 
-      // var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-      // var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
-      // console.log("coch0: ", cochleaSphericalCoords[0])
-      // console.log("coch1: ", cochleaSphericalCoords[1])
-      // console.log("coch2: ", cochleaSphericalCoords[2])
-      var cochleaSphericalCoords = [{eta:Math.random(),phi:Math.random()}]
+      var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
+      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+      console.log(barkScaleFrequencyData.frequencies)
       self.updateFiberGeometry(cochleaSphericalCoords)
     })
   },
 
   setupAudio: function () {
-    var audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 
     this.analyser = webAudioAnalyser2({
       context: audioCtx,
@@ -83,15 +81,23 @@ module.exports = {
 
     this.analyser.connect(audioCtx.destination)
 
-    var $micSelector = require('mic-selector')(audioCtx)
-    $micSelector.attr('id', 'mic-selector')
+    //var $micSelector = require('mic-selector')(audioCtx)
+    //$micSelector.attr('id', 'mic-selector')
     var self = this
 
-    $micSelector.on('bang', function (e, node) {
-      node.connect(self.analyser)
-    })
+    //$micSelector.on('bang', function (e, node) {
+    //  node.connect(self.analyser)
+    //})
 
-    $('body').append($micSelector)
+    //$('body').append($micSelector)
+    getMic(audioCtx)
+  .then(function (microphone) {
+    microphone.connect(self.analyser)
+  })
+  .fail(function (err) {
+    console.log('err: ', err)
+  })
+
   },
 
   updateFiberGeometry: function(csc) {
@@ -101,7 +107,6 @@ module.exports = {
           fiber.vertices = generateFiberGeometry(sphericalCoords).vertices
           fiber.verticesNeedUpdate = true
           fiber.normalsNeedUpdate = true
-          console.log('meow')
       }
   },
 
