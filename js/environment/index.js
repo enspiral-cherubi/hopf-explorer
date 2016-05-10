@@ -109,7 +109,7 @@ module.exports = {
           var oldSphericalCoords = fiber.sphericalCoords
           var originalSphericalCoords = fiber.originalSphericalCoords
           var newSphericalCoords = csc[i]
-          var sane = false //try turning this off
+          var sane = true //try turning this off
           var diff = function (t) {
             var plasticity = 1 //knob
             var insideOut = false //minor oh fuck button
@@ -126,7 +126,7 @@ module.exports = {
           for(j = 0; j<520; j++){
             //two more knobs, the multiplier for j and the scale of the transformation
             var twist = 1 //knob
-            var inertia = 0.1 //knob
+            var inertia = 0.3 //knob
             fiber.vertices[j].addScaledVector(diff(twist*j/520),inertia)
           }
           if (sane) {
