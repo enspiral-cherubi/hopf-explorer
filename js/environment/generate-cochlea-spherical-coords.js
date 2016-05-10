@@ -2,7 +2,10 @@ var generateCochleaSphericalCoords = function (fourierData,numIntervals,eta0,num
   //eta0 should be slowly varying, fourierData computed with numIntevals,
   //numCirclesPerInterval is a independent parameter
   //the following line is a nice button
-  fourierData.reverse()
+  var smallBass = true //nice button
+  if (smallBass){
+    fourierData.reverse()
+  }
   var bigAngleInterval = Math.PI/numIntervals
   var smallAngleInterval = bigAngleInterval/numCirclesPerInterval
   var sphericalCoords = []

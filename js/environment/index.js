@@ -105,15 +105,19 @@ module.exports = {
           var fiber = this.fibers[i]
           var oldSphericalCoords = fiber.sphericalCoords
           var newSphericalCoords = csc[i]
-          //remove the following line for something crazy
-          fiber.sphericalCoords = csc[i]
+          var sane = true //try turning this off
+          if (sane) {
+            fiber.sphericalCoords = csc[i]
+          }
           var diff = function (t) {
-            //tune the multiply scalar here for an interesting knob
+            var plasticity = 1 //knob
             return hopfMap(newSphericalCoords,t).sub(hopfMap(oldSphericalCoords,t)
-              .multiplyScalar(1))}
+              .multiplyScalar(plasticity))}
           for(j = 0; j<520; j++){
             //two more knobs, the multiplier for j and the scale of the transformation
-            fiber.vertices[j].addScaledVector(diff(5*j/520),0.1)
+            var twist = 1 //knob
+            var inertia = 0.1 //knob
+            fiber.vertices[j].addScaledVector(diff(twist*j/520),inertia)
           }
           fiber.verticesNeedUpdate = true
       }
