@@ -23,7 +23,8 @@ var generateFiberGeometry = function (sphericalCoords) {
   // TODO: make color xyz to rgb
   var hexString = hexStringFromSphericalCoords(sphericalCoords).replace('#', '0x')
   var hex = parseInt(hexString)
-  var material = new THREE.MeshBasicMaterial({color: hex,wireframe:true})
+  //wireframes are cool here
+  var material = new THREE.MeshNormalMaterial({color: hex, wireframe:true})
   tubeGeometry.mesh = new THREE.Mesh(tubeGeometry,material)
   tubeGeometry.sphericalCoords = sphericalCoords
   tubeGeometry.dynamic = true

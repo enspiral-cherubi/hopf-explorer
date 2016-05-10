@@ -29,6 +29,7 @@ module.exports = {
     WindowResize(this.renderer, this.camera)
     this.hud.init(this)
     this.setupAudio()
+    this.explode = "no"
   },
 
   startAnimation: function () {
@@ -104,10 +105,15 @@ module.exports = {
           var fiber = this.fibers[i]
           var oldSphericalCoords = fiber.sphericalCoords
           var newSphericalCoords = csc[i]
+          //remove the following line for something crazy
+          fiber.sphericalCoords = csc[i]
           var diff = function (t) {
-            return hopfMap(newSphericalCoords,t).sub(hopfMap(oldSphericalCoords,t))}
+            //tune the multiply scalar here for an interesting knob
+            return hopfMap(newSphericalCoords,t).sub(hopfMap(oldSphericalCoords,t)
+              .multiplyScalar(1))}
           for(j = 0; j<520; j++){
-            fiber.vertices[j].add(diff(j/520))
+            //two more knobs, the multiplier for j and the scale of the transformation
+            fiber.vertices[j].addScaledVector(diff(5*j/520),0.1)
           }
           fiber.verticesNeedUpdate = true
       }
