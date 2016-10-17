@@ -8,7 +8,7 @@ var generateFiber = function (sphericalCoords) {
   var hex = parseInt(hexString)
   var material = new THREE.LineBasicMaterial({color: hex})
 
-  var eta = Math.tanh(sphericalCoords.eta-Math.PI/2)
+  var eta = Math.PI*Math.tanh(sphericalCoords.eta-Math.PI/2)/2
 
   var fiber = new THREE.Curve()
 
