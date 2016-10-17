@@ -4,10 +4,16 @@ var hexStringFromSphericalCoords = require('./../services/hex-string-from-spheri
 
 // TODO: give to world
 var generateFiber = function (sphericalCoords) {
+  var hexString = hexStringFromSphericalCoords(sphericalCoords).replace('#', '0x')
+  var hex = parseInt(hexString)
+  var material = new THREE.LineBasicMaterial({color: hex})
+
+  var eta = Math.tanh(sphericalCoords.eta-Math.PI/2)
+
   var fiber = new THREE.Curve()
 
   fiber.getPoint = function (t) {
-    var eta = sphericalCoords.eta, phi = sphericalCoords.phi, theta = 2 * Math.PI * t
+    var phi = sphericalCoords.phi, theta = 2 * Math.PI * t
 
     //get point on unit 3-sphere in 4D space with Cartesian coordinates
     var x1 = Math.cos(phi+theta) * Math.sin(eta/2)
@@ -36,9 +42,7 @@ var generateFiber = function (sphericalCoords) {
     false   // closed
   )
   // TODO: make color xyz to rgb
-  var hexString = hexStringFromSphericalCoords(sphericalCoords).replace('#', '0x')
-  var hex = parseInt(hexString)
-  var material = new THREE.LineBasicMaterial({color: hex})
+
   return new THREE.Mesh(tubeGeometry, material)
 }
 

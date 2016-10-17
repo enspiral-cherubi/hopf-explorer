@@ -1,14 +1,14 @@
 var sketchpad = require('./sketchpad')
 var $ = require('jquery')
-var apod = require('apod')
-apod.apiKey = process.env.NASA_API_KEY
+// var apod = require('apod')
+// apod.apiKey = process.env.NASA_API_KEY
 
 var hud = {
   sketchpad: sketchpad,
 
   init: function(env) {
     this.sketchpad.init(env)
-    this.setBackgroundImage()
+    // this.setBackgroundImage()
   },
 
   setBackgroundImage: function () {

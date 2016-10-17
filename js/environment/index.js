@@ -10,7 +10,7 @@ var WindowResize = require('three-window-resize')
 module.exports = {
   scene: new THREE.Scene(),
   camera: new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000),
-  renderer: new THREE.WebGLRenderer({alpha: true, canvas: document.getElementById('environment')}),
+  renderer: new THREE.WebGLRenderer({alpha: true, canvas: document.getElementById('environment'),antialias: true, logarithmicDepthBuffer: true}),
   fibers: [],
   particles: [],
   sketchMode: "fiber",
