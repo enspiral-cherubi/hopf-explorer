@@ -208,8 +208,12 @@ module.exports = {
     switch (mode) {
       case 'fly':
         if (this.controls) { this.controls.dispose() }
-        this.controls = new THREE.FlyControls(this.camera, this.renderer.domElement, { movementSpeed: 0.01 })
-        this.controls.enable()
+        // this.controls = new THREE.FlyControls(this.camera, this.renderer.domElement, { movementSpeed: 0.01 })
+        // this.controls.enable()
+        this.controls = new THREE.FlyControls(this.camera, this.renderer.domElement)
+        this.controls.movementSpeed = 0.01
+        this.controls.rollSpeed = 0.01
+        this.keyMap = {}
         break
       case 'orbit':
         if (this.controls) { this.controls.disable() }

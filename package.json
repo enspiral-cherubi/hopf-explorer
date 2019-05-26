@@ -35,8 +35,10 @@
     "mic-selector": "^2.0.1",
     "shoe": "0.0.15",
     "three": "^0.74.0",
+    "three-fly-controls": "^1.1.0",
     "three-orbit-controls": "^72.0.0",
     "three-window-resize": "^1.0.4",
+    "upgrade": "^1.1.0",
     "vectors": "^0.1.0",
     "web-audio-analyser-2": "^2.0.1"
   },
