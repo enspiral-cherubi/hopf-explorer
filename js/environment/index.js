@@ -82,7 +82,7 @@ module.exports = {
       equalTemperedFreqBinCount: 10
     })
 
-    this.analyser.connect(audioCtx.destination)
+    // this.analyser.connect(audioCtx.destination)
 
     //var $micSelector = require('mic-selector')(audioCtx)
     //$micSelector.attr('id', 'mic-selector')
