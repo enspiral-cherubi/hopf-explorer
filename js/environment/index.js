@@ -169,7 +169,7 @@ module.exports = {
             }
             return difference
             }
-          for(j = 0; j<520; j++){
+          for(var j = 0; j<520; j++){
             //two more knobs, the multiplier for j and the scale of the transformation
             var twist = 1 //knob
             fiber.vertices[j].addScaledVector(diff(twist*j/520),this.explodeyness)
