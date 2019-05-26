@@ -27,7 +27,7 @@ module.exports = {
   hud: hud,
   init: function () {
     this.initRenderer()
-    this.addAxes()
+    // this.addAxes()
     this.initControls()
     WindowResize(this.renderer, this.camera)
     this.hud.init(this)
@@ -42,13 +42,25 @@ module.exports = {
     this.gui = new dat.GUI()
     var options = this.gui.addFolder('options')
     this.cochlea = false
+    this.toggled = true
     this.audio = false
+    this.insideOut = false
+    this.dontExplode = true
+    this.plasticity = 1
+    this.explodeyness = 0.1
     options.add(this, 'cochlea').listen()
     options.add(this, 'audio').listen()
+    options.add(this, 'insideOut').listen()
+    options.add(this, 'dontExplode').listen()
+    options.add(this, 'plasticity').min(-1).max(5).step(0.1).listen()
+    options.add(this, 'explodeyness').min(-1).max(2).step(0.1).listen()
+    options.add(this,'removeFibers');
     options.open()
+    this.gui.close()
 
     var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
     var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+    this.originalCSC = cochleaSphericalCoords
     self.fibers = cochleaSphericalCoords.map(function (sc) {
       var hex = parseInt(hexStringFromSphericalCoords({eta:sc.eta,phi:-2*sc.phi+Math.PI}).replace('#', '0x'))
       return generateFiberGeometry({sphericalCoords:sc,color:hex})})
@@ -62,8 +74,10 @@ module.exports = {
       var coordsArray = self.hud.sketchpad.extractNewSphericalCoords()
       if (self.sketchMode === "fiber"){
         var newFibers = coordsArray.map(generateFiberGeometry)
-        self.fibers.push(newFibers)
-        newFibers.forEach(function (fiberGeometry) { self.scene.add(fiberGeometry.mesh) })
+        newFibers.forEach(function (fiberGeometry) {
+          self.fibers.push(fiberGeometry)
+          self.scene.add(fiberGeometry.mesh)
+        })
       }
       if (self.sketchMode === "particle"){
         var newparticles = coordsArray.map(generateParticle)
@@ -78,9 +92,23 @@ module.exports = {
 
       if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
 
-      if(self.audio && self.cochlea){
+      if(self.cochlea && !self.toggled){
+        self.toggleCochlea()
+        self.toggled = true
+      }
+
+      if(!self.cochlea && self.toggled){
+        self.toggleCochlea()
+        self.toggled = false
+      }
+
+      if(self.cochlea){
         var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-        var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+        if(self.audio){
+          var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+        } else {
+          var cochleaSphericalCoords = self.originalCSC
+        }
         self.updateFiberGeometry(cochleaSphericalCoords)
       }
     })
@@ -115,16 +143,22 @@ module.exports = {
 
   },
 
+  toggleCochlea: function() {
+    for(i = 0; i< this.originalCSC.length; i++){
+      this.fibers[i].mesh.visible = this.cochlea
+    }
+  },
+
   updateFiberGeometry: function(csc) {
       for (i = 0; i< csc.length; i++) {
           var fiber = this.fibers[i]
           var oldSphericalCoords = fiber.sphericalCoords
           var originalSphericalCoords = fiber.originalSphericalCoords
           var newSphericalCoords = csc[i]
-          var sane = true //try turning this off
+          var sane = this.dontExplode //try turning this off
           var diff = function (t) {
-            var plasticity = 1 //knob
-            var insideOut = false //minor oh fuck button
+            var plasticity = this.plasticity //knob
+            var insideOut = this.insideOut //minor oh fuck button
             var newHopf = hopfMap(newSphericalCoords,insideOut && 1-t || t)
             var oldHopf = hopfMap(oldSphericalCoords,t)
             var difference = newHopf.sub(oldHopf).multiplyScalar(0.8)
@@ -138,8 +172,7 @@ module.exports = {
           for(j = 0; j<520; j++){
             //two more knobs, the multiplier for j and the scale of the transformation
             var twist = 1 //knob
-            var inertia = 0.3 //knob
-            fiber.vertices[j].addScaledVector(diff(twist*j/520),inertia)
+            fiber.vertices[j].addScaledVector(diff(twist*j/520),this.explodeyness)
           }
           if (sane) {
             fiber.sphericalCoords = csc[i]
@@ -157,11 +190,17 @@ module.exports = {
 
   removeFibers: function () {
     var self = this
-    this.fibers.forEach(function (fiber) {
-        self.scene.remove(fiber)
-        fiber.material.dispose()
-        fiber.texture.dispose()
-        fiber.geometry.dispose() })
+    while(self.fibers.length > self.originalCSC.length){
+      var fiber = self.fibers.pop()
+      self.scene.remove(fiber.mesh)
+    }
+    // for(i = self.originalCSC.length-1; i< self.fibers.length; i++){
+    //   var fiber = self.fibers[i]
+    //   self.scene.remove(fiber.mesh)
+    //   // fiber.material.dispose()
+    //   // fiber.texture.dispose()
+    //   // fiber.geometry.dispose()
+    // }
   },
 
   setControlsMode: function (mode) {
