@@ -1,5 +1,5 @@
-var $ = require('jquery')
-var deferred = $.Deferred()
+const  $ = require('jquery')
+const  deferred = $.Deferred()
 
 module.exports = function (audioCtx) {
 

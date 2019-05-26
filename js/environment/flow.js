@@ -1,5 +1,5 @@
-var THREE = require('three')
-var mag = require('vectors/mag')(3)
+const THREE = require('three')
+const mag = require('vectors/mag')(3)
 
 var getFlow = function (vect,dt) {
   //the variable names correspond to those in generate-fiber.js

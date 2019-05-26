@@ -1,6 +1,5 @@
-var sketchpad = require('./sketchpad')
-var $ = require('jquery')
-var apod = require('apod')
+const sketchpad = require('./sketchpad')
+const $ = require('jquery')
 // apod.apiKey = process.env.NASA_API_KEY
 
 var hud = {

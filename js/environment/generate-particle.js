@@ -1,6 +1,6 @@
-var THREE = require('three')
-var mag = require('vectors/mag')(3)
-var hexStringFromSphericalCoords = require('./../services/hex-string-from-spherical-coords')
+const THREE = require('three')
+const mag = require('vectors/mag')(3)
+const hexStringFromSphericalCoords = require('./../services/hex-string-from-spherical-coords')
 
 // TODO: give to world
 var generateParticle = function (sphericalCoords,start) {
