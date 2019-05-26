@@ -13,11 +13,13 @@ var getMic = require('./getMic.js')(audioCtx)
 var generateCochleaSphericalCoords = require('./generate-cochlea-spherical-coords')
 var hexStringFromSphericalCoords = require('./../services/hex-string-from-spherical-coords')
 var hopfMap = require('./../services/hopf-map')
+const dat = require('dat.gui')
+
 
 module.exports = {
   scene: new THREE.Scene(),
   camera: new THREE.PerspectiveCamera(1000, window.innerWidth/window.innerHeight, 0.1, 5000),
-  renderer: new THREE.WebGLRenderer({alpha: true, canvas: document.getElementById('environment')}),
+  renderer: new THREE.WebGLRenderer({alpha: false, canvas: document.getElementById('environment'),clearColor:0x000000}),
   fibers: [],
   particles: [],
   sketchMode: "fiber",
@@ -36,6 +38,14 @@ module.exports = {
   startAnimation: function () {
     var self = this
     var lastTimeMsec = null
+
+    this.gui = new dat.GUI()
+    var options = this.gui.addFolder('options')
+    this.cochlea = false
+    this.audio = false
+    options.add(this, 'cochlea').listen()
+    options.add(this, 'audio').listen()
+    options.open()
 
     var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
     var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
@@ -68,9 +78,11 @@ module.exports = {
 
       if (self.controlsMode === 'fly' && self.controls) { self.controls.update(deltaMsec/1000) }
 
-      var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
-      var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
-      self.updateFiberGeometry(cochleaSphericalCoords)
+      if(self.audio && self.cochlea){
+        var barkScaleFrequencyData = self.analyser.barkScaleFrequencyData()
+        var cochleaSphericalCoords = generateCochleaSphericalCoords(barkScaleFrequencyData.frequencies, 24, 0, 5)
+        self.updateFiberGeometry(cochleaSphericalCoords)
+      }
     })
   },
 
