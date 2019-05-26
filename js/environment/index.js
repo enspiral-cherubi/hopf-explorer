@@ -144,13 +144,13 @@ module.exports = {
   },
 
   toggleCochlea: function() {
-    for(i = 0; i< this.originalCSC.length; i++){
+    for(var i = 0; i< this.originalCSC.length; i++){
       this.fibers[i].mesh.visible = this.cochlea
     }
   },
 
   updateFiberGeometry: function(csc) {
-      for (i = 0; i< csc.length; i++) {
+      for (var i = 0; i< csc.length; i++) {
           var fiber = this.fibers[i]
           var oldSphericalCoords = fiber.sphericalCoords
           var originalSphericalCoords = fiber.originalSphericalCoords

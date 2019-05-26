@@ -9,8 +9,8 @@ var generateCochleaSphericalCoords = function (fourierData,numIntervals,eta0,num
   var bigAngleInterval = Math.PI/numIntervals
   var smallAngleInterval = bigAngleInterval/numCirclesPerInterval
   var sphericalCoords = []
-  for (j=0; j<numIntervals; j++){
-    for (k=0; k<numCirclesPerInterval; k++){
+  for (var j=0; j<numIntervals; j++){
+    for (var k=0; k<numCirclesPerInterval; k++){
       //eta is evenly distributed amongst the circles in the cochlea
       var eta = bigAngleInterval*j + smallAngleInterval*k
       //phi(eta) = asin(tanh((eta+eta0)*cot(beta)))

@@ -1,7 +1,7 @@
-var $ = require('jquery')
-var mag = require('vectors/mag')(2)
-var hexStringFromSphericalCoords = require('./../../services/hex-string-from-spherical-coords')
-var controls = require('./controls')
+const $ = require('jquery')
+const mag = require('vectors/mag')(2)
+const hexStringFromSphericalCoords = require('./../../services/hex-string-from-spherical-coords')
+const controls = require('./controls')
 
 var sketchpad = {
   $sketchpad: $('#sketchpad'),

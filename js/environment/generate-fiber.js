@@ -1,6 +1,6 @@
-var THREE = require('three')
-var hexStringFromSphericalCoords = require('./../services/hex-string-from-spherical-coords')
-var hopfMap = require('./../services/hopf-map')
+const THREE = require('three')
+const hexStringFromSphericalCoords = require('./../services/hex-string-from-spherical-coords')
+const hopfMap = require('./../services/hopf-map')
 
 // TODO: give to world
 var generateFiberGeometry = function (params) {

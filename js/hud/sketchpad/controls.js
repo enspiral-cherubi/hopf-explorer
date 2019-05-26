@@ -1,4 +1,4 @@
-var $ = require('jquery')
+const $ = require('jquery')
 
 var controls = {
   $sketchpad: $('#sketchpad'),
